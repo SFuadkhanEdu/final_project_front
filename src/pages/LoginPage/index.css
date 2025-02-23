@@ -1,0 +1,88 @@
+#login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  #login-page-container  .eye {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid black;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  #login-page-container  .pupil {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transform-origin: center;
+    transition: transform 0.5s linear;
+  }
+
+  #login-page-container  .eyes-container {
+      position: absolute;
+      top: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+  }
+
+  #login-page-container  .login-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+
+  #login-page-container .login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #login-page-container .login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #login-page-container  .login-container button:hover {
+    background-color: #45a049;
+  }
+
+  /* Hide the actual cursor in the inputs for better effect */
+  #login-page-container input {
+    caret-color: transparent;
+  }
+
+  /* Styling for closed eyes */
+  #login-page-container .closed {
+    transform:  scaleY(0.2) !important;
+    background-color: black; /* Shrink pupils to close eyes */
+  }

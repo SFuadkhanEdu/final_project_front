@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#main_page_section{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main_page_container{
+    display: flex;
+    flex-direction: column;
+    max-width: 630px;
+    width: 100%;
+    gap: 40px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #0095f6;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0077cc;
+}
