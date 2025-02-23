@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useUploadReelsContext } from '../../context/UploadReelContext';
 import axios from 'axios';
 import VideoUploadComponent from '../../components/VideoUploadComponent/VideoUploadComponent';
 import { toast, ToastContainer } from 'react-toastify';
+import './index.css'; // Import the CSS
+
+// Memoized HashtagList to avoid re-rendering on every update
+const HashtagList = React.memo(({ hashtags, onHashtagClick }) => (
+  <div className="hashtag-list">
+    {hashtags.map((hashtag, index) => (
+      <button key={index} onClick={() => onHashtagClick(hashtag)}>
+        #{hashtag}
+      </button>
+    ))}
+  </div>
+));
 
 function AddReelPage() {
   const { reelVideo, setReelVideo, reelDescription, setReelDescription } = useUploadReelsContext();
   const [loading, setLoading] = useState(false);
   const [hashtags, setHashtags] = useState([]);
-  const [selectedHashtags, setSelectedHashtags] = useState([]);
+  const [selectedHashtags, setSelectedHashtags] = useState([]); // Use state for selected hashtags
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -16,8 +28,7 @@ function AddReelPage() {
       const response = await axios.get("http://localhost:5001/api/hashtags", {
         withCredentials: true
       });
-      // Assuming response.data is an array of objects with 'name' property for hashtags
-      const hashtagData = response.data.map(item => item.name); // Adjust based on your API response
+      const hashtagData = response.data.map(item => item.name); 
       setHashtags(hashtagData);
     }
     getHashtags();
@@ -33,10 +44,11 @@ function AddReelPage() {
     const formData = new FormData();
     formData.append("description", reelDescription);
     formData.append("video", reelVideo);
-    // formData.append("user_id", "65f8c43b7c9c1b002f14e7d3"); // Example User ID
-    formData.append("category_id", "65f8c43b7c9c1b002f14e7d9"); // Example Category ID
+    formData.append("category_id", "65f8c43b7c9c1b002f14e7d9"); 
 
-    const formDataHashtags = new FormData();
+    selectedHashtags.forEach(hashtag => {
+      formData.append("hashtags[]", hashtag); 
+    });
 
     try {
       const postResponse = await axios.post("http://localhost:5001/api/posts", formData, {
@@ -45,18 +57,9 @@ function AddReelPage() {
           "Content-Type": "multipart/form-data",
         },
       });
-      selectedHashtags.forEach(
-        (x,i)=>formData.append(i,x)
-      )
-      const hashResponse = await axios.post("http://localhost:5001/api/hashtags", formDataHashtags, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
 
       toast("Post uploaded successfully!");
-
+      setSelectedHashtags([]); // Clear selected hashtags after upload
     } catch (error) {
       console.error("Upload error:", error);
       alert(`Upload failed! ${error.response?.data?.message || "Unknown error"}`);
@@ -65,56 +68,67 @@ function AddReelPage() {
     }
   };
 
-  // Filter hashtags based on the search query
   const filteredHashtags = hashtags.filter((hashtag) =>
     hashtag.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleHashtagClick = (hashtag) => {
-    setSelectedHashtags((prevSelected) => [...prevSelected, hashtag]);
-  };
+  // useCallback to optimize the function
+  const handleHashtagClick = useCallback((hashtag) => {
+    // Avoid adding duplicate hashtags
+    if (!selectedHashtags.includes(hashtag)) {
+      setSelectedHashtags((prevSelected) => [...prevSelected, hashtag]);
+    }
+  }, [selectedHashtags]);
+
+  // Memoized Component to only show selected hashtags without triggering unnecessary re-renders
+  const SelectedHashtags = React.memo(() => (
+    <div className="selected-hashtags">
+      <p>Selected Hashtags: {`#${selectedHashtags.join(' #')}`}</p>
+    </div>
+  ));
 
   return (
     <>
-        <ToastContainer></ToastContainer>
+      <ToastContainer />
 
-      {!reelVideo ? (
-        <VideoUploadComponent />
-      ) : (
-        <div>
-          <textarea
-            placeholder="Description"
-            value={reelDescription}
-            onChange={(e) => setReelDescription(e.target.value)}
-          />
+      <div className="add-reel-page-wrapper">
+        <div className="add-reel-container">
+          {!reelVideo ? (
+            <VideoUploadComponent />
+          ) : (
+            <div className="flex">
+              <div className="upload_video_div"> 
+                <video src={URL.createObjectURL(reelVideo)} controls width="500" autoPlay muted/>
+              </div>
+              <div className="form-container">
+                <textarea
+                  placeholder="Description"
+                  value={reelDescription}
+                  onChange={(e) => setReelDescription(e.target.value)}
+                  maxLength={500}
+                />
 
-          {/* Hashtag Search */}
-          <div>
-            <input
-              type="text"
-              placeholder="Search Hashtags"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <div>
-              {filteredHashtags.map((hashtag, index) => (
-                <button key={index} onClick={() => handleHashtagClick(hashtag)}>
-                  #{hashtag}
+                <div className="hashtag-search">
+                  <input
+                    type="text"
+                    placeholder="Search Hashtags"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <HashtagList hashtags={filteredHashtags} onHashtagClick={handleHashtagClick} />
+                </div>
+
+                {/* Memoized and separate component for displaying selected hashtags */}
+                <SelectedHashtags />
+
+                <button onClick={handleUpload} disabled={loading}>
+                  {loading ? "Uploading..." : "Upload Post"}
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
-
-          {/* Display selected hashtags */}
-          <div>
-            <p>Selected Hashtags: {selectedHashtags.join(' ')}</p>
-          </div>
-
-          <button onClick={handleUpload} disabled={loading}>
-            {loading ? "Uploading..." : "Upload Post"}
-          </button>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }

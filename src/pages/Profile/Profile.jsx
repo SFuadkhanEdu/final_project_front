@@ -4,6 +4,8 @@ import "./index.css"; // Ensure you create this file for styling
 import DEFAULT_PROFILE_PIC from "../../assets/prof_pic.jpg";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetRoleOfUser from "../../hooks/useGetRoleOfUser";
+import { useModaLReelContext } from "../../context/ModalReelContext";
+import Reel from "../../components/VideoPost/VideoComponent";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -12,6 +14,8 @@ function ProfilePage() {
   const { id } = useParams();
   const { role, setRole, loadingRole } = useGetRoleOfUser();
   const navigate = useNavigate();
+  const { isModalVisible, handleModalVisibility } = useModaLReelContext();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     if (!loadingRole) {
@@ -31,7 +35,6 @@ function ProfilePage() {
         let userResponse;
 
         if (id === "self") {
-          // Fetch authenticated user
           userResponse = await axios.get("http://localhost:5001/api/users/self", {
             withCredentials: true,
           });
@@ -45,9 +48,8 @@ function ProfilePage() {
           throw new Error("User not found");
         }
 
-        setUser(userResponse.data); // ✅ Set user first, so we don't show "User not found"
+        setUser(userResponse.data);
 
-        // Try fetching user posts
         try {
           const postsResponse = await axios.get(
             `http://localhost:5001/api/posts/user/${userResponse.data._id}`,
@@ -58,7 +60,7 @@ function ProfilePage() {
           setPosts(postsResponse.data || []);
         } catch (postError) {
           console.warn("No posts found for this user.");
-          setPosts([]); // Set empty posts array instead of throwing an error
+          setPosts([]);
         }
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -71,18 +73,62 @@ function ProfilePage() {
     fetchProfile();
   }, [id]);
 
+  const handleProfilePicChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("profile_picture", file);
+  
+      try {
+        const response = await axios.put(
+          "http://localhost:5001/api/users/self",
+          formData,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data", // Ensuring content type is multipart
+            },
+          }
+        );
+        setUser((prevUser) => ({
+          ...prevUser,
+          profile_picture: response.data.profile_picture,
+        }));
+      } catch (error) {
+        console.error("Error uploading profile picture", error);
+      }
+    }
+  };
+  
+
   if (loading) return <p>Loading...</p>;
   if (!user) return <p>User not found.</p>;
+
+  const clickHandle = (post) => {
+    handleModalVisibility();
+  };
 
   return (
     <div id="profile-page">
       {/* Profile Header */}
       <div className="profile-header">
-        <img
-          src={user.profile_picture || DEFAULT_PROFILE_PIC}
-          alt="Profile"
-          className="profile-pic"
-        />
+        <div className="profile-pic-container">
+          <img
+            src={user.profile_picture || DEFAULT_PROFILE_PIC}
+            alt="Profile"
+            className="profile-pic"
+          />
+          <label htmlFor="profile-pic-input" className="change-pic-btn">
+            Change
+          </label>
+          <input
+            type="file"
+            id="profile-pic-input"
+            style={{ display: "none" }}
+            accept="image/*"
+            onChange={handleProfilePicChange}
+          />
+        </div>
         <div className="profile-info">
           <h2>{user.username}</h2>
           <p>{user.bio || "No bio available."}</p>
@@ -98,9 +144,7 @@ function ProfilePage() {
             </span>
           </div>
           {id !== "self" && <button className="follow-btn">Follow</button>}
-
         </div>
-        
       </div>
 
       {/* User Posts */}
@@ -108,7 +152,19 @@ function ProfilePage() {
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post._id} className="post">
-              <video src={post.video_url} alt="Post" />
+              <video
+                src={post.video_url}
+                alt="Post"
+                onClick={() => clickHandle(post)}
+              />
+              {isModalVisible ? (
+                <Reel
+                  videoSrc={post?.video_url}
+                  likes={post?.likes || 0}
+                  username={post?.username}
+                  description={post?.description}
+                />
+              ) : null}
             </div>
           ))
         ) : (

@@ -1,4 +1,5 @@
-#user_navbar{
+/* User navbar */
+#user_navbar {
     height: 100vh;
     width: var(--nav-wide-width);
     position: fixed;
@@ -8,30 +9,67 @@
     top: 0;
     left: 0;
     padding: 20px 10px;
-}
-#user_navbar a {
-    color: black;
-}
-#user_navbar .navigation_links{
+  }
+  
+  #user_navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Navigation links container */
+  #user_navbar .navigation_links {
     display: flex;
     flex-direction: column;
     height: 80%;
     justify-content: center;
-}
-#user_navbar .navigation_links li a{
-    color: black;
-}
-@media screen and (max-width:1920px) {
-    #user_navbar{
-        width: var(--nav-medium-width);
+    gap: 30px;
+  }
+  
+  #user_navbar .navigation_links li a{
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add space between icon and text */
+  }
+  
+  /* Active state for links with icons and bold text */
+  #user_navbar .navigation_links li .active span, #user_navbar .navigation_links li .active svg {
+    font-weight: bold;
+
+  }
+  
+
+  
+  /* Link styles */
+  #user_navbar .navigation_links li a {
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  #user_navbar .navigation_links li a:hover {
+    color: #FFD700; /* Hover color */
+  }
+  
+  /* Icon styles */
+  #user_navbar .navigation_links li i {
+    font-size: 20px; /* Icon size */
+    transition: color 0.3s;
+  }
+  
+  /* Media query for screen sizes */
+  @media screen and (max-width: 1920px) {
+    #user_navbar {
+      width: var(--nav-medium-width);
     }
-}
-@media screen and (max-width:1200px) {
-    #user_navbar{
-        width: var(--nav-narrow-width);
-        
+  }
+  
+  @media screen and (max-width: 1200px) {
+    #user_navbar {
+      width: var(--nav-narrow-width);
     }
-    #user_navbar .navigation_links li span{
-        display: none;
+  
+    #user_navbar .navigation_links li span {
+      display: none; /* Hide text on small screens */
     }
-}
+  }
+  

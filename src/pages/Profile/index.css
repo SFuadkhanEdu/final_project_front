@@ -1,5 +1,6 @@
-#profile-page{
-    
+#profile-page .profile-stats{
+    display: flex;
+    gap: 10px;
 }
 #profile-page .post{
     width: calc(100% / 3);
@@ -24,10 +25,31 @@
 }
 #profile-page .profile-header{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    padding-top: 30px;
 }
 #profile-page .profile-pic{
     width: 150px;
     height: 150px;
     border-radius: 50%;
 }
+.profile-pic-container {
+    position: relative;
+  }
+  
+  .change-pic-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  
+  .profile-pic-container input {
+    display: none;
+  }
+  

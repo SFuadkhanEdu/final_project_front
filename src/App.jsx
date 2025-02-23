@@ -23,12 +23,12 @@ function App() {
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="messages" element={<MessagesPage />} />
 
             {/* User Routes */}
             <Route path="/" element={<MainLayout />}>
               <Route index element={<UserHome />} /> {/* Default child route */}
               <Route path="profile/:id" element={<ProfilePage />} />
-              <Route path="messages" element={<MessagesPage />} />
               <Route path="addReels" element={<AddReelPage />} />
             </Route>
 

@@ -2,8 +2,15 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    color: white;
   }
   ul,ol,a{
     text-decoration: none;
     list-style-type: none;
+  }
+  body{
+    background-color: black;
+  }
+  .flex{
+    display: flex;
   }
