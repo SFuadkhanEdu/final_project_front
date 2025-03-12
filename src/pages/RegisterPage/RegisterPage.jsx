@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./index.css";
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -19,6 +19,7 @@ const validationSchema = Yup.object({
 
 function RegisterPage() {
     const [APImessage, setAPImessage] = useState("")
+    const navigate = useNavigate();
     const handleSubmit = (values) => {
         fetch("http://localhost:5001/api/register", {
           headers: {
@@ -31,6 +32,13 @@ function RegisterPage() {
           .then((res) => res.json()) // Parse the JSON response
           .then((data) => {
             toast(data.message)
+            console.log(data);
+            if (data.message === "User Registered Successfully") {
+              setTimeout(() => {
+                navigate("/login")
+              }, 2000);
+            }
+            
           })
           .catch((err) => console.log(err));
 

@@ -1,0 +1,10 @@
+/* NotificationsPage.css */
+.notifications-page {
+  color: white; /* Makes all text white */
+}
+
+.notifications-page p,
+.notifications-page h2,
+.notifications-page li {
+  color: white;
+}

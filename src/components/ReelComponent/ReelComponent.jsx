@@ -6,17 +6,19 @@ import DEFAULT_PROF_PIC from "../../assets/prof_pic.jpg";
 import Reel from "../VideoPost/VideoComponent";
 import { useModaLReelContext } from "../../context/ModalReelContext";
 import { Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-function ReelComponent({ object }) {
-  const { _id, video_url, user_id, description, created_at } = object;
-  const [userInfo, setUserInfo] = useState({});
+function ReelComponent({ object ,loggedUserInfo}) {
+  const { _id, video_url, description, created_at } = object;
+  const post_user_id = object.user_id;
+  const [postCreatorUserInfo, setPostCreatorUserInfo] = useState({});
   const [timeInterval] = useCalculateReelTimeInterval(created_at);
   const videoRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const { isModalVisible, handleModalVisibility } = useModaLReelContext();
   const [usernames, setUsernames] = useState({}); // Store usernames
-
-
+  const navigate = useNavigate();
+  const userInfo = loggedUserInfo;
   // 🆕 Like state
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
@@ -30,24 +32,24 @@ function ReelComponent({ object }) {
 
   // Fetch user info
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchpostCreatorUserInfo = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/users/${user_id}`,
+          `http://localhost:5001/api/users/${post_user_id}`,
           {
             withCredentials: true,
           }
         );
-        setUserInfo(response.data);
+        setPostCreatorUserInfo(response.data);
       } catch (err) {
         console.error("Error fetching user info:", err);
       }
     };
 
-    if (user_id) {
-      fetchUserInfo();
+    if (post_user_id) {
+      fetchpostCreatorUserInfo();
     }
-  }, [user_id]);
+  }, [post_user_id]);
 
   // Fetch likes info
   useEffect(() => {
@@ -61,9 +63,13 @@ function ReelComponent({ object }) {
         );
 
         const arr_of_likes = response.data;
-
+        console.log("arr: ", arr_of_likes);
+        console.log("post_user_id: ", post_user_id);
+        console.log("find: ",arr_of_likes.find((like) => like.user_id === userInfo._id));
+        console.log("userInfo: ", userInfo);
+        
         setLiked(
-          Boolean(arr_of_likes.find((like) => like.user_id === user_id))
+          Boolean(arr_of_likes.find((like) => like.user_id === userInfo._id))
         );
         setLikesCount(response.data.length);
       } catch (error) {
@@ -128,7 +134,8 @@ function ReelComponent({ object }) {
       );
 
       if (response.data.success) {
-        setLiked(response.data.liked);
+        // setLiked(response.data.liked);
+        setLiked(!liked);
         setLikesCount(response.data.likesCount);
       }
     } catch (error) {
@@ -154,10 +161,10 @@ function ReelComponent({ object }) {
       console.error("Error submitting comment:", error);
     }
   };
-  const getUserName = async (user_id) =>{
+  const getUserName = async (post_user_id) =>{
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/users/${user_id}`,
+        `http://localhost:5001/api/users/${post_user_id}`,
         { withCredentials: true }
       );
       console.log(response.data.username);
@@ -166,6 +173,9 @@ function ReelComponent({ object }) {
     } catch (error) {
       console.error("Error fetching username", error);
     }
+  }
+  const viewProfileHandle = ()=>{
+    navigate("/profile/self")
   }
   // Handle video play/pause based on visibility
   useEffect(() => {
@@ -193,12 +203,13 @@ function ReelComponent({ object }) {
     }
   }, [isVisible]);
 
+
   return (
     <>
       {isModalVisible ? (
         <Reel
           videoSrc={video_url}
-          username={userInfo.username}
+          username={postCreatorUserInfo.username}
           toggleLike={toggleLike}
           likes={likesCount}
           isLiked={liked}
@@ -210,12 +221,13 @@ function ReelComponent({ object }) {
             <div className="left">
               <div className="profile_pic">
                 <img
-                  src={userInfo.profile_picture ?? DEFAULT_PROF_PIC}
+                  src={postCreatorUserInfo.profile_picture ?? DEFAULT_PROF_PIC}
                   alt="Profile"
+                  onClick={viewProfileHandle}
                 />
               </div>
               <div className="profile_info">
-                <h3>{userInfo.username || "Loading..."}</h3>
+                <h3>{postCreatorUserInfo.username || "Loading..."}</h3>
               </div>
               <div className="post_time">
                 <p>{timeInterval}</p>

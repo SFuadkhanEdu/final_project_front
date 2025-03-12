@@ -94,3 +94,9 @@
   width: 100%;
   justify-content: space-between;
 }
+.reel .likes_div, .reel .likes_div span,.reel .left, .reel .right {
+  color: white;
+}
+.reel .description_div{
+  color: white;
+}

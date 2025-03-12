@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import { toast, ToastContainer } from "react-toastify";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 
 function LoginPage() {
   const [isEyesClosed, setIsEyesClosed] = useState(false);
   const usernameInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const pupilsRef = useRef([]);
+  const navigate = useNavigate();
 
   // Function to get the caret position
   function getCaretPosition(input) {
@@ -59,7 +61,8 @@ function LoginPage() {
 
     const email = usernameInputRef.current.value;
     const password = passwordInputRef.current.value;
-
+    console.log(password);
+    
     if (!email || !password) {
       toast("Please enter both username and password.");
       return;
@@ -80,14 +83,15 @@ function LoginPage() {
 
       if (response.ok) {
         toast("Login successful!");
-        // Optionally, redirect user or save token in localStorage
+        navigate("/")
       } else {
-        toast(data.message || "Login failed. Try again.");
+        toast("Login failed. Try again.");
       }
     } catch (error) {
       toast("An error occurred. Please try again.");
       console.error("Login error:", error);
     }
+    
   }
 
   useEffect(() => {
@@ -146,7 +150,10 @@ function LoginPage() {
     <input type="password" placeholder="Password" id="password" ref={passwordInputRef} />
     <button type="submit">Login</button>
   </form>
+<Link to={"/register"}>Create new account</Link>
+
 </div>
+
     </>
   );
 }

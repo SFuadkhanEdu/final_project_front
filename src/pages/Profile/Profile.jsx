@@ -20,7 +20,7 @@ function ProfilePage() {
   useEffect(() => {
     if (!loadingRole) {
       if (!role) {
-        navigate("/");
+        navigate("/login");
         return;
       }
       if (role === "admin") {

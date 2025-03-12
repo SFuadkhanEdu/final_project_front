@@ -2,192 +2,191 @@
 
 /* Wrapper to isolate styles */
 .add-reel-page-wrapper {
-    padding: 20px;
-    /* background-color: #f9f9f9; */
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* Container for the page */
-  .add-reel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    /* background-color: #fff; */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-  
-  /* Flex container for video and form */
+  padding: 20px;
+  /* background-color: #f9f9f9; */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* Container for the page */
+.add-reel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  /* background-color: #fff; */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Flex container for video and form */
+.add-reel-page-wrapper .flex {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  /* flex-wrap: wrap; */
+}
+
+/* Video container */
+.add-reel-page-wrapper .upload_video_div {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  /* background-color: #fff; */
+}
+
+/* Video styling */
+.add-reel-page-wrapper video {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Form container */
+.add-reel-page-wrapper .form-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Description textarea */
+.add-reel-page-wrapper textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  /* border: 1px solid #ddd; */
+  font-size: 16px;
+  resize: none;
+}
+
+/* Hashtag search container */
+.add-reel-page-wrapper .hashtag-search input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Hashtags list container */
+.add-reel-page-wrapper .hashtag-list {
+  width: 100%;
+  max-width: 300px; /* Fixed width for the hashtag list */
+  height: 150px; /* Height for the scrollable area */
+  overflow-y: auto; /* Scrollable feature */
+  margin-top: 10px;
+  padding: 10px;
+  /* border: 1px solid #ddd; */
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Individual hashtag buttons */
+.add-reel-page-wrapper .hashtag-list button {
+  margin: 5px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+}
+
+.add-reel-page-wrapper .hashtag-list button:hover {
+  background-color: #0056b3;
+}
+
+/* Button styles */
+.add-reel-page-wrapper button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.add-reel-page-wrapper button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.add-reel-page-wrapper button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+/* Selected hashtags display */
+.add-reel-page-wrapper .selected-hashtags {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.add-reel-page-wrapper .selected-hashtags button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.add-reel-page-wrapper .selected-hashtags button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1400px) {
   .add-reel-page-wrapper .flex {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    /* flex-wrap: wrap; */
+    flex-direction: column; /* Stack video and form vertically */
   }
-  
-  /* Video container */
-  .add-reel-page-wrapper .upload_video_div {
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    /* background-color: #fff; */
-  }
-  
-  /* Video styling */
-  .add-reel-page-wrapper video {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    border-radius: 10px;
-  }
-  
-  /* Form container */
+
   .add-reel-page-wrapper .form-container {
     width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: none;
   }
-  
-  /* Description textarea */
-  .add-reel-page-wrapper textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    /* border: 1px solid #ddd; */
-    font-size: 16px;
-    resize: none;
-  }
-  
-  /* Hashtag search container */
-  .add-reel-page-wrapper  .hashtag-search input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-  }
-  
-  /* Hashtags list container */
+
   .add-reel-page-wrapper .hashtag-list {
+    max-width: none;
+    width: 100%; /* Full width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .add-reel-page-wrapper .upload_video_div {
     width: 100%;
-    max-width: 300px; /* Fixed width for the hashtag list */
-    height: 150px;  /* Height for the scrollable area */
-    overflow-y: auto;  /* Scrollable feature */
-    margin-top: 10px;
-    padding: 10px;
-    /* border: 1px solid #ddd; */
-    border-radius: 5px;
-    display: flex;
-    flex-wrap: wrap;
   }
-  
-  /* Individual hashtag buttons */
-  .add-reel-page-wrapper .hashtag-list button {
-    margin: 5px;
-    font-size: 14px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
+
+  .add-reel-page-wrapper video {
+    max-width: 100%;
   }
-  
-  .add-reel-page-wrapper .hashtag-list button:hover {
-    background-color: #0056b3;
+
+  .add-reel-page-wrapper .form-container {
+    padding: 5px;
   }
-  
-  /* Button styles */
+
   .add-reel-page-wrapper button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s;
-  }
-  
-  .add-reel-page-wrapper button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-  }
-  
-  .add-reel-page-wrapper button:hover:not(:disabled) {
-    background-color: #45a049;
-  }
-  
-  /* Selected hashtags display */
-  .add-reel-page-wrapper .selected-hashtags {
-    margin-top: 15px;
     font-size: 14px;
-    color: #555;
+    padding: 8px 16px;
   }
-  
-  .add-reel-page-wrapper .selected-hashtags button {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    color: #333;
-    padding: 5px 10px;
-    margin-right: 5px;
-    cursor: pointer;
+
+  .add-reel-page-wrapper .selected-hashtags {
+    font-size: 12px;
   }
-  
-  .add-reel-page-wrapper .selected-hashtags button:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 1400px) {
-    .add-reel-page-wrapper .flex {
-      flex-direction: column; /* Stack video and form vertically */
-    }
-  
-    .add-reel-page-wrapper .form-container {
-      width: 100%;
-      max-width: none;
-    }
-  
-    .add-reel-page-wrapper .hashtag-list {
-      max-width: none;
-      width: 100%;  /* Full width on smaller screens */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .add-reel-page-wrapper .upload_video_div {
-      width: 100%;
-    }
-  
-    .add-reel-page-wrapper video {
-      max-width: 100%;
-    }
-  
-    .add-reel-page-wrapper .form-container {
-      padding: 5px;
-    }
-  
-    .add-reel-page-wrapper button {
-      font-size: 14px;
-      padding: 8px 16px;
-    }
-  
-    .add-reel-page-wrapper .selected-hashtags {
-      font-size: 12px;
-    }
-  }
-  
+}

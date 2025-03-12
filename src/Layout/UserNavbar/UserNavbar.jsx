@@ -9,11 +9,21 @@ import {
   User,
   PlusSquare,
   MoreHorizontal,
+  LogOut
 } from "lucide-react";
 import "../../index.css";
 import "./index.css";
+import axios from "axios";
 
 function Navbar() {
+  const logOutHandle = async()=>{
+    try {
+      // Send a POST request to logout
+      await axios.post("http://localhost:5001/api/logout", {}, { withCredentials: true });      
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  }
   return (
     <nav id="user_navbar">
       <NavLink to="/">
@@ -35,6 +45,7 @@ function Navbar() {
             <Clapperboard size={20} /> <span>Reels</span>
           </NavLink>
         </li>
+        
         <li>
           <NavLink to="/messages">
             <MessageSquare size={20} /> <span>Messages</span>
@@ -53,6 +64,11 @@ function Navbar() {
         <li>
           <NavLink to="/addReels">
             <PlusSquare size={20} /> <span>Create</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" onClick={logOutHandle}>
+            <LogOut size={20} /> <span>LogOut</span>
           </NavLink>
         </li>
       </ul>

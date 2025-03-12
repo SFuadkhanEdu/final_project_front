@@ -91,7 +91,7 @@ const MessagingPage = () => {
                   <div
                     key={index}
                     className={`message ${
-                      message.sender_id === selectedUser._id
+                      message.sender_id !== selectedUser._id
                         ? "sent"
                         : "received"
                     }`}
